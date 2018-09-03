@@ -1,0 +1,25 @@
+{
+  "name": "okaybay",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bamazon.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drewradley/okaybay.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/drewradley/okaybay/issues"
+  },
+  "homepage": "https://github.com/drewradley/okaybay#readme",
+  "dependencies": {
+    "easy-table": "^1.1.1",
+    "inquirer": "^6.2.0",
+    "mysql": "^2.16.0",
+    "table": "^4.0.3"
+  }
+}
