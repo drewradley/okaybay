@@ -14,7 +14,7 @@ var connection = mysql.createConnection({
   user: "root",
 
   // Your password
-  password: "Robert13!#",
+  password: "fishsticks",
   database: "bamazon_DB"
 });
 
@@ -36,6 +36,7 @@ function start()
       if(AllID.indexOf(product.id)==-1)AllID.push(product.id);
       t.cell('Id', product.id)
       t.cell('Product', product.product_name)
+      t.cell('Department', product.department_name)
       t.cell('Price, USD', product.price, Table.number(2))
       t.cell('In Stock', product.stock_quantity, Table.number(0))
       t.newRow()
@@ -97,6 +98,7 @@ function showProduct(id)
         }
       t.cell('Id', product.id)
       t.cell('Product', product.product_name)
+      t.cell('Department', product.department_name)
       t.cell('Price, USD', product.price, Table.number(2))
       t.cell('In Stock', product.stock_quantity, Table.number(0))
       t.newRow()
@@ -135,12 +137,14 @@ function checkQuantity(q)
     }
     else
     {
-      var newQuantity=results[0].stock_quantity-q;
+      var newQuantity=results[0].stock_quantity-parseInt(q);
+      var totalSales=results[0].product_sales+(q*results[0].price);
       connection.query(
         "UPDATE products SET ? WHERE ?",
         [
           {
-            stock_quantity: newQuantity
+            stock_quantity: newQuantity,
+            product_sales: financial(totalSales)
           },
           {
             id: productID
@@ -149,10 +153,13 @@ function checkQuantity(q)
         function(error) {
           if (error) throw err;
           var tc=q*results[0].price;
-          function financial(x) {
-            return Number.parseFloat(x).toFixed(2);
-          }
+
           console.log("Successful purchase. Total cost: $"+financial(tc));
+          // connection.query("INSERT INTO departments (department_name, product_sales)    SELECT department_name, product_sales FROM products"),function(err, results)
+          // {
+          //   if (err) throw err;
+          // }
+
           inquirer
           .prompt([
             {
@@ -170,4 +177,12 @@ function checkQuantity(q)
       );
     } 
   })
+
+}
+// function UpdateDepartmentsDB()
+// {
+//   connection.query(`INSERT INTO departments (department_name, product_sales) VALUES ('${answer.itemN}', '${answer.deptN}', '${answer.price}', '${answer.quantity}')`,productID, function(err, results)
+// }
+function financial(x) {
+  return Number.parseFloat(x).toFixed(2);
 }
